@@ -4,21 +4,21 @@ import "os"
 
 type Config struct {
     Port     string
-    DB_USER   string
-    DB_PASS   string
-    DB_HOST   string
-    DB_PORT   string
-    DB_NAME   string
+    DBUser   string
+    DBPass   string
+    DBHost   string
+    DBPort   string
+    DBName   string
     // Add other config fields as needed
 }
 
 func LoadConfig() *Config {
     return &Config{
         Port:   os.Getenv("PORT"),
-        DB_USER: os.Getenv("DB_USER"),
-        DB_PASS: os.Getenv("DB_PASS"),
-        DB_HOST: os.Getenv("DB_HOST"),
-        DB_PORT: os.Getenv("DB_PORT"),
-        DB_NAME: os.Getenv("DB_NAME"),
+        DBUser: os.Getenv("DB_USER"),
+        DBPass: os.Getenv("DB_PASS"),
+        DBHost: os.Getenv("DB_HOST"),
+        DBPort: os.Getenv("DB_PORT"),
+        DBName: os.Getenv("DB_NAME"),
     }
 }
