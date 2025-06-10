@@ -1,0 +1,162 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go workspace file
+go.work
+
+# Built application binaries
+/bin/
+/build/
+/dist/
+main
+app
+server
+
+# Environment variables and configuration
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+*.env
+config.json
+config.yaml
+config.yml
+app.conf
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+database.sql
+dump.sql
+*.sql.gz
+
+# Logs
+*.log
+logs/
+log/
+
+# Payment provider keys and secrets
+stripe_*.key
+paypal_*.key
+merchant_*.key
+*.pem
+*.p12
+*.pfx
+
+# SSL certificates
+*.crt
+*.key
+*.csr
+ssl/
+certs/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.fleet/
+
+# Node.js (if using any build tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Static file build outputs
+/static/dist/
+/static/build/
+/public/dist/
+/public/build/
+/assets/dist/
+/assets/build/
+
+# Minified files
+*.min.js
+*.min.css
+
+# Source maps
+*.map
+
+# Testing
+coverage/
+*.cover
+*.coverprofile
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Upload directories
+uploads/
+files/
+media/
+images/user/
+documents/
+
+# Cache directories
+cache/
+tmp/
+.cache/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Air live reload tool
+tmp/
+.air.toml
+
+# Local development database
+dev.db
+test.db
+local.db
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Deployment
+deploy.sh
+*.tar.gz
+*.zip
+
+# Payment webhook logs
+webhook_*.log
+payment_*.log
+
+# Session files
+sessions/
+*.session
