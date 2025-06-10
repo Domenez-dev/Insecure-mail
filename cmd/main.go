@@ -6,10 +6,10 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 
-	"github.com/Domenez-dev/Insecure-mail/internal/config"
-	"github.com/Domenez-dev/Insecure-mail/internal/database"
-	"github.com/Domenez-dev/Insecure-mail/internal/routes"
-	"github.com/Domenez-dev/Insecure-mail/internal/services"
+	"github.com/domenez-dev/Insecure-mail/internal/config"
+	"github.com/domenez-dev/Insecure-mail/internal/database"
+	"github.com/domenez-dev/Insecure-mail/internal/routes"
+	"github.com/domenez-dev/Insecure-mail/internal/services"
 )
 
 func main() {
@@ -31,8 +31,9 @@ func main() {
 
 	// Static files and templates
 	app.Static("/static", "./web/static")
-	app.Static("/admin", "./web/templates/admin.html") // Serve admin manually if needed
-	app.Static("/", "./web/templates/index.html")       // For frontend landing
+	app.Static("/admin", "./web/templates/admin.html")
+	app.Static("/about", "./web/templates/about.html")
+	app.Static("/", "./web/templates/index.html")
 
 	// Register routes
 	routes.Register(app, db, cfg)
