@@ -1,0 +1,14 @@
+<!-- web/templates/partials/auth_nav.html -->
+<div class="auth-nav">
+    {{if .User}}
+    <div class="user-profile">
+        <span>Welcome, {{.User.Name}}</span>
+        <a href="/logout" class="btn btn-sm">Logout</a>
+    </div>
+    {{else}}
+    <div class="auth-links">
+        <a href="/login" class="btn btn-sm">Login</a>
+        <a href="/register" class="btn btn-sm btn-primary">Register</a>
+    </div>
+    {{end}}
+</div>

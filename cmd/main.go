@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 	"github.com/joho/godotenv"
 
 	"github.com/domenez-dev/Insecure-mail/internal/config"
@@ -26,14 +27,16 @@ func main() {
 	// Start scheduler
 	services.StartScheduler(db)
 
-	// Start Fiber app
-	app := fiber.New()
+	// Initialize HTML templates
+	engine := html.New("./web/templates", ".html")
 
-	// Static files and templates
+	// Start Fiber app with template engine
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
+
+	// Static files
 	app.Static("/static", "./web/static")
-	app.Static("/admin", "./web/templates/admin.html")
-	app.Static("/about", "./web/templates/about.html")
-	app.Static("/", "./web/templates/index.html")
 
 	// Register routes
 	routes.Register(app, db, cfg)

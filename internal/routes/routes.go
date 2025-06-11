@@ -1,34 +1,75 @@
-// Add these routes to your internal/routes/routes.go file
-
 package routes
 
 import (
+	"time"
+
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 	"github.com/domenez-dev/Insecure-mail/internal/config"
-	"github.com/domenez-dev/Insecure-mail/internal/models"
 )
 
 func Register(app *fiber.App, db *gorm.DB, cfg *config.Config) {
-	// Existing health check
-	app.Get("/health", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"status": "ok"})
-	})
+	// Health checks
+	app.Get("/health", healthCheck)
+	app.Get("/db/ping", dbPing(db, cfg))
 
-	// Database connection test
-	app.Get("/db/ping", func(c *fiber.Ctx) error {
+	// Public routes
+	public := app.Group("/")
+	{
+		public.Get("/", homePage)
+		public.Get("/about", aboutPage)
+		public.Get("/login", loginPage)
+		public.Get("/register", registerPage)
+		public.Get("/confirmation", confirmationPage)
+		public.Get("/unsubscribe", unsubscribePage)
+	}
+
+	// Subscriber routes (authenticated)
+	subscriber := app.Group("/subscriber")
+	{
+		subscriber.Get("/dashboard", subscriberDashboard)
+		subscriber.Get("/emails", subscriberEmails)
+		subscriber.Get("/emails/:id", subscriberEmailView)
+		subscriber.Get("/account", subscriberAccount)
+		subscriber.Get("/plans", subscriberPlans)
+		subscriber.Get("/payment", subscriberPayment)
+		subscriber.Get("/payment/success", subscriberPaymentSuccess)
+	}
+
+	// Admin routes (authenticated)
+	admin := app.Group("/admin")
+	{
+		admin.Get("/dashboard", adminDashboard)
+		admin.Get("/subscribers", adminSubscribers)
+		admin.Get("/subscribers/:id", adminSubscriberDetail)
+		admin.Get("/newsletters", adminNewsletters)
+		admin.Get("/newsletters/new", adminNewsletterCreate)
+		admin.Get("/newsletters/preview", adminNewsletterPreview)
+		admin.Get("/logs", adminSendLogs)
+		admin.Get("/payments", adminPayments)
+	}
+
+	// Error handlers
+	app.Use(notFoundHandler)
+}
+
+// Health check handlers
+func healthCheck(c *fiber.Ctx) error {
+	return c.JSON(fiber.Map{"status": "ok"})
+}
+
+func dbPing(db *gorm.DB, cfg *config.Config) fiber.Handler {
+	return func(c *fiber.Ctx) error {
 		sqlDB, err := db.DB()
 		if err != nil {
 			return c.Status(500).JSON(fiber.Map{
 				"error": "Failed to get database instance",
-				"details": err.Error(),
 			})
 		}
 
 		if err := sqlDB.Ping(); err != nil {
 			return c.Status(500).JSON(fiber.Map{
 				"error": "Database ping failed",
-				"details": err.Error(),
 			})
 		}
 
@@ -36,102 +77,105 @@ func Register(app *fiber.App, db *gorm.DB, cfg *config.Config) {
 			"status": "Database connection OK",
 			"database": cfg.DBName,
 		})
+	}
+}
+
+// Public page handlers
+func homePage(c *fiber.Ctx) error {
+    return c.Render("index", fiber.Map{
+        "CurrentPath": c.Path(),
+        "CurrentYear": time.Now().Year(),
+        // Add other data as needed
+    })
+}
+
+func aboutPage(c *fiber.Ctx) error {
+	return c.Render("about", fiber.Map{})
+}
+
+func loginPage(c *fiber.Ctx) error {
+	return c.Render("login", fiber.Map{})
+}
+
+func registerPage(c *fiber.Ctx) error {
+	return c.Render("register", fiber.Map{})
+}
+
+func confirmationPage(c *fiber.Ctx) error {
+	return c.Render("confirmation", fiber.Map{})
+}
+
+func unsubscribePage(c *fiber.Ctx) error {
+	return c.Render("unsubscribe", fiber.Map{})
+}
+
+// Subscriber page handlers
+func subscriberDashboard(c *fiber.Ctx) error {
+	return c.Render("subscriber/dashboard", fiber.Map{})
+}
+
+func subscriberEmails(c *fiber.Ctx) error {
+	return c.Render("subscriber/emails", fiber.Map{})
+}
+
+func subscriberEmailView(c *fiber.Ctx) error {
+	return c.Render("subscriber/email_view", fiber.Map{
+		"ID": c.Params("id"),
 	})
+}
 
-	// Check if tables exist and their structure
-	app.Get("/db/tables", func(c *fiber.Ctx) error {
-		tables := []string{}
+func subscriberAccount(c *fiber.Ctx) error {
+	return c.Render("subscriber/account", fiber.Map{})
+}
 
-		// Get list of tables
-		if err := db.Raw("SHOW TABLES").Scan(&tables).Error; err != nil {
-			return c.Status(500).JSON(fiber.Map{
-				"error": "Failed to get tables",
-				"details": err.Error(),
-			})
-		}
+func subscriberPlans(c *fiber.Ctx) error {
+	return c.Render("subscriber/plans", fiber.Map{})
+}
 
-		// Check if our expected tables exist
-		expectedTables := []string{"subscribers", "newsletters", "email_sents", "payments", "admin_users"}
-		tableStatus := make(map[string]bool)
+func subscriberPayment(c *fiber.Ctx) error {
+	return c.Render("subscriber/payment", fiber.Map{})
+}
 
-		for _, expected := range expectedTables {
-			found := false
-			for _, actual := range tables {
-				if actual == expected {
-					found = true
-					break
-				}
-			}
-			tableStatus[expected] = found
-		}
+func subscriberPaymentSuccess(c *fiber.Ctx) error {
+	return c.Render("subscriber/payment_success", fiber.Map{})
+}
 
-		return c.JSON(fiber.Map{
-			"all_tables": tables,
-			"expected_tables_status": tableStatus,
-		})
+// Admin page handlers
+func adminDashboard(c *fiber.Ctx) error {
+	return c.Render("admin/dashboard", fiber.Map{})
+}
+
+func adminSubscribers(c *fiber.Ctx) error {
+	return c.Render("admin/subscribers", fiber.Map{})
+}
+
+func adminSubscriberDetail(c *fiber.Ctx) error {
+	return c.Render("admin/subscriber_detail", fiber.Map{
+		"ID": c.Params("id"),
 	})
+}
 
-	// Test GORM operations with a sample record
-	app.Get("/db/test-operations", func(c *fiber.Ctx) error {
-		// Test creating a subscriber
-		testSubscriber := models.Subscriber{
-			Email: "test@example.com",
-			Name:  "Test User",
-		}
+func adminNewsletters(c *fiber.Ctx) error {
+	return c.Render("admin/newsletters", fiber.Map{})
+}
 
-		// Create
-		if err := db.Create(&testSubscriber).Error; err != nil {
-			return c.Status(500).JSON(fiber.Map{
-				"error": "Failed to create test subscriber",
-				"details": err.Error(),
-			})
-		}
+func adminNewsletterCreate(c *fiber.Ctx) error {
+	return c.Render("admin/newsletter_create", fiber.Map{})
+}
 
-		// Read
-		var foundSubscriber models.Subscriber
-		if err := db.First(&foundSubscriber, testSubscriber.ID).Error; err != nil {
-			return c.Status(500).JSON(fiber.Map{
-				"error": "Failed to read test subscriber",
-				"details": err.Error(),
-			})
-		}
+func adminNewsletterPreview(c *fiber.Ctx) error {
+	return c.Render("admin/newsletter_preview", fiber.Map{})
+}
 
-		// Count total subscribers
-		var count int64
-		db.Model(&models.Subscriber{}).Count(&count)
+func adminSendLogs(c *fiber.Ctx) error {
+	return c.Render("admin/send_logs", fiber.Map{})
+}
 
-		// Clean up - delete test record
-		db.Delete(&testSubscriber)
+func adminPayments(c *fiber.Ctx) error {
+	return c.Render("admin/payments", fiber.Map{})
+}
 
-		return c.JSON(fiber.Map{
-			"status": "GORM operations successful",
-			"test_record_created": testSubscriber.ID,
-			"test_record_found": foundSubscriber.Email,
-			"total_subscribers": count - 1, // -1 because we deleted the test record
-		})
-	})
-
-	// Get database stats
-	app.Get("/db/stats", func(c *fiber.Ctx) error {
-		stats := make(map[string]int64)
-
-		// Count records in each table using temporary variables
-		var subscriberCount, newsletterCount, emailSentCount, paymentCount, adminUserCount int64
-
-		db.Model(&models.Subscriber{}).Count(&subscriberCount)
-		db.Model(&models.Newsletter{}).Count(&newsletterCount)
-		db.Model(&models.EmailSent{}).Count(&emailSentCount)
-		db.Model(&models.Payment{}).Count(&paymentCount)
-		db.Model(&models.AdminUser{}).Count(&adminUserCount)
-
-		stats["subscribers"] = subscriberCount
-		stats["newsletters"] = newsletterCount
-		stats["email_sents"] = emailSentCount
-		stats["payments"] = paymentCount
-		stats["admin_users"] = adminUserCount
-
-		return c.JSON(fiber.Map{
-			"record_counts": stats,
-		})
-	})
+// Error handler
+func notFoundHandler(c *fiber.Ctx) error {
+	return c.Status(404).Render("errors/404", fiber.Map{})
 }

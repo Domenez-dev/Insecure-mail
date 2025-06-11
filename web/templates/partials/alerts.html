@@ -1,0 +1,9 @@
+<!-- web/templates/partials/alerts.html -->
+{{if .Alert}}
+<div class="alert alert-{{.Alert.Type}}">
+    {{.Alert.Message}}
+    {{if .Alert.Dismissible}}
+    <button class="alert-dismiss">&times;</button>
+    {{end}}
+</div>
+{{end}}
