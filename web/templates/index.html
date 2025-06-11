@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{ template "partials/head" . }}
+        <link rel="stylesheet" href="/static/css/pages/index.css" />
+    </head>
+    <body>
+        {{ template "partials/header" . }}
+
+        <header class="hero">
+            <div class="container">
+                <div class="hero-container">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            Weekly
+                            <span class="highlight">Cybersecurity</span>
+                            Intelligence
+                        </h1>
+                        <p class="hero-subtitle">
+                            Get the latest vulnerability reports, threat
+                            analysis, and security insights delivered straight
+                            to your inbox. Stay informed, stay secure.
+                        </p>
+                        <div class="hero-stats">
+                            <div class="stat">
+                                <span class="stat-number">5K+</span>
+                                <span class="stat-label">Subscribers</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">Weekly</span>
+                                <span class="stat-label">Reports</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">Trusted</span>
+                                <span class="stat-label">Source</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-form">
+                        <div class="subscription-card">
+                            <h2>Join Insecure-mail</h2>
+                            <p>Join cybersecurity professionals worldwide</p>
+                            <form
+                                id="subscriptionForm"
+                                class="subscription-form"
+                            >
+                                <div class="form-group">
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        placeholder="Your Name"
+                                        required
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder="your@email.com"
+                                        required
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <select
+                                        id="subscription-type"
+                                        name="subscription_type"
+                                        required
+                                    >
+                                        <option value="">Select Plan</option>
+                                        <option value="free">
+                                            Free (1 email/week)
+                                        </option>
+                                        <option value="premium-monthly">
+                                            Premium Monthly - $2.99/month
+                                        </option>
+                                        <option value="premium-yearly">
+                                            Premium Yearly - $29.99/year (2
+                                            months free!)
+                                        </option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="subscribe-btn">
+                                    <i class="fas fa-envelope"></i>
+                                    Subscribe Now
+                                </button>
+                            </form>
+                            <p class="privacy-note">
+                                <i class="fas fa-lock"></i>
+                                Your data is secure. Unsubscribe anytime.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="plans">
+            <div class="container">
+                <h2 class="section-title">Choose Your Security Level</h2>
+                <p class="plans-subtitle">
+                    Pick the perfect plan to stay ahead of emerging threats and
+                    vulnerabilities
+                </p>
+                <div class="plans-grid">
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <div class="plan-icon">
+                                <i class="fas fa-shield"></i>
+                            </div>
+                            <h3>Basic Security</h3>
+                            <div class="plan-price">
+                                <span class="price">Free</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>1 weekly newsletter</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Basic vulnerability alerts</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Security news roundup</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Community access</span>
+                            </div>
+                            <div class="feature-item disabled">
+                                <i class="fas fa-times-circle"></i>
+                                <span>Deep threat analysis</span>
+                            </div>
+                            <div class="feature-item disabled">
+                                <i class="fas fa-times-circle"></i>
+                                <span>Exclusive tools & guides</span>
+                            </div>
+                        </div>
+                        <button class="plan-btn basic">Start Free</button>
+                    </div>
+
+                    <div class="plan-card premium">
+                        <div class="popular-badge">Most Popular</div>
+                        <div class="plan-header">
+                            <div class="plan-icon">
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                            <h3>Premium Security</h3>
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="price">2.99</span>
+                                <span class="period">/month</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>3 emails per week</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>In-depth threat analysis</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Zero-day vulnerability reports</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Exclusive security tools</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Priority support</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Archive access</span>
+                            </div>
+                        </div>
+                        <button class="plan-btn premium">Go Premium</button>
+                    </div>
+
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <div class="plan-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h3>Premium Yearly</h3>
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="price">29.99</span>
+                                <span class="period">/year</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Everything in Premium</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>2 months free (save 33%)</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Annual threat report</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Early access to new features</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Yearly security checklist</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>VIP community status</span>
+                            </div>
+                        </div>
+                        <button class="plan-btn premium">Best Value</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">What You'll Receive</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <h3>Vulnerability Reports</h3>
+                        <p>
+                            Latest CVEs, zero-days, and critical security flaws
+                            with detailed analysis and remediation steps.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Threat Intelligence</h3>
+                        <p>
+                            Emerging attack vectors, APT group activities, and
+                            global threat landscape insights from security
+                            researchers.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3>Security Tools</h3>
+                        <p>
+                            Curated list of cybersecurity tools, scripts, and
+                            resources to enhance your security posture.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h3>Industry News</h3>
+                        <p>
+                            Breaking cybersecurity news, data breaches, and
+                            regulatory updates from trusted sources worldwide.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <div class="container">
+                <h2 class="section-title">Trusted by Security Professionals</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>
+                                "Insecure-mail keeps me informed about the
+                                latest threats without overwhelming me with
+                                noise. The premium content is incredibly
+                                valuable."
+                            </p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <h4>Sarah Chen</h4>
+                                <span>Senior Security Analyst</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>
+                                "The vulnerability reports are detailed and
+                                actionable. I've prevented several incidents
+                                thanks to their early warnings."
+                            </p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <h4>Mike Rodriguez</h4>
+                                <span>IT Security Manager</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>
+                                "Best cybersecurity newsletter I've subscribed
+                                to. The threat intelligence helps me stay ahead
+                                of emerging attacks."
+                            </p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <h4>Alex Thompson</h4>
+                                <span>Penetration Tester</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {{ template "partials/footer" . }}
+    </body>
+</html>
