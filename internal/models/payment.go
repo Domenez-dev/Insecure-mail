@@ -9,7 +9,9 @@ type Payment struct {
 	Amount        float64
 	Currency      string
 	Status        string  // e.g., "completed", "pending", "failed"
+	Plan 		  string  // "Free", "Premium", "Yearly"
 	PaidAt        time.Time
+	PlanExpiresAt time.Time
 
 	Subscriber Subscriber `gorm:"foreignKey:SubscriberID"`
 }
