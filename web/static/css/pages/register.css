@@ -1,0 +1,219 @@
+/* Registration Container */
+.registration-container {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+    color: #fff;
+    min-height: calc(100vh - 80px);
+}
+
+/* Step Progress */
+.step-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.step-progress::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    z-index: 1;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.step-label {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+    background: #00ffff;
+    border-color: #00ffff;
+    color: #0c0c0c;
+    font-weight: bold;
+}
+
+.step.active .step-label {
+    opacity: 1;
+    color: #00ffff;
+}
+
+/* Form Steps */
+.form-step {
+    display: none;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.form-step.active {
+    display: block;
+}
+
+.form-step h2 {
+    margin-bottom: 20px;
+    color: #00ffff;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+/* OTP Input */
+.otp-inputs {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.otp-digit {
+    width: 50px;
+    height: 60px;
+    text-align: center;
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 6px;
+    color: #fff;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.btn-prev,
+.btn-next,
+.btn-submit {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-prev {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.btn-next,
+.btn-submit {
+    background: linear-gradient(135deg, #00ffff, #ff6b6b);
+    color: #fff;
+}
+
+.btn-prev:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-next:hover,
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+}
+
+/* Payment Notice */
+.payment-notice {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.iti {
+    --iti-border-color: #5b5b5b;
+    --iti-dialcode-color: #999999;
+    --iti-dropdown-bg: #0d1117;
+    --iti-arrow-color: #aaaaaa;
+    --iti-hover-color: #30363d;
+    --iti-path-globe-1x: url("path/to/globe_light.webp");
+    --iti-path-globe-2x: url("path/to/globe_light@2x.webp");
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .step-label {
+        display: none;
+    }
+
+    .form-step {
+        padding: 20px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}

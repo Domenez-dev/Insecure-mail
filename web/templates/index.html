@@ -333,5 +333,23 @@
         </section>
 
         {{ template "partials/footer" . }}
+        <script>
+            document
+                .getElementById("subscriptionForm")
+                .addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    const name = encodeURIComponent(
+                        document.getElementById("name").value,
+                    );
+                    const email = encodeURIComponent(
+                        document.getElementById("email").value,
+                    );
+                    const plan = encodeURIComponent(
+                        document.getElementById("subscription-type").value,
+                    );
+
+                    window.location.href = `/register?name=${name}&email=${email}&plan=${plan}`;
+                });
+        </script>
     </body>
 </html>
