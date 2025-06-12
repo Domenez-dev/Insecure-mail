@@ -3,8 +3,8 @@ package models
 import "time"
 
 type AdminUser struct {
-	ID           uint      `gorm:"primaryKey"`
-	Username     string    `gorm:"uniqueIndex;not null"`
-	PasswordHash string    `gorm:"not null"`
+	ID           uint   `gorm:"primaryKey"`
+	Username     string `gorm:"type:varchar(191);uniqueIndex;not null"`
+	PasswordHash string `gorm:"type:varchar(255);not null"`
 	CreatedAt    time.Time
 }
