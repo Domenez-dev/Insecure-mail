@@ -16,6 +16,7 @@
 
 # Go workspace file
 go.work
+google-api/
 
 # Built application binaries
 /bin/
