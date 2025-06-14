@@ -35,7 +35,13 @@ func SendOTP(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid data"})
 	}
 
+	// Validate email format
+	if !strings.Contains(body.Email, "@") || !strings.Contains(body.Email, ".") {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid email format"})
+	}
+
 	otp := fmt.Sprintf("%06d", rand.Intn(1000000))
+	fmt.Println("OTP: ", otp) // For debugging, remove in production
 	otpCache[strings.ToLower(body.Email)] = otp
 	go expireOTP(body.Email)
 
@@ -43,11 +49,14 @@ func SendOTP(c *fiber.Ctx) error {
 	message := fmt.Sprintf("Your OTP is %s", otp)
 
 	if err := services.SendGmailOTP(body.Email, subject, message); err != nil {
-		log.Println("Gmail API error:", err)
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to send OTP"})
+		log.Printf("Gmail API error for %s: %v", body.Email, err)
+		return c.Status(500).JSON(fiber.Map{
+			"error":   "Failed to send OTP",
+			"details": err.Error(), // Send the actual error to frontend for debugging
+		})
 	}
 
-	return c.JSON(fiber.Map{"message": "OTP sent"})
+	return c.JSON(fiber.Map{"message": "OTP sent successfully"})
 }
 
 // POST /register/verify
