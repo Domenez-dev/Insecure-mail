@@ -22,7 +22,7 @@ func main() {
 	// Initialize config, DB, and Mailgun
 	cfg := config.LoadConfig()
 	db := database.InitDB(cfg)
-	services.InitMailgun(cfg)
+	services.InitGmail()
 
 	// Start scheduler
 	services.StartScheduler(db)
