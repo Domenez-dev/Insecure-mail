@@ -4,10 +4,17 @@ import (
 	"github.com/domenez-dev/Insecure-mail/internal/config"
 	"github.com/domenez-dev/Insecure-mail/internal/handlers"
 	"github.com/gofiber/fiber/v2"
+	"github.com/ansrivas/fiberprometheus/v2"
 	"gorm.io/gorm"
 )
 
 func Register(app *fiber.App, db *gorm.DB, cfg *config.Config) {
+	// Prometheus Metrics
+	prometheus := fiberprometheus.New("insecure-mail")
+	prometheus.RegisterAt(app, "/metrics")
+	app.Use(prometheus.Middleware)
+
+
 	// Health checks
 	app.Get("/health", handlers.HealthCheck)
 	app.Get("/db/ping", handlers.DbPing(db, cfg))
