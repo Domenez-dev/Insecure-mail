@@ -1,0 +1,74 @@
+# Supabase local config. Full reference:
+# https://supabase.com/docs/guides/local-development/cli/config
+#
+# NOTE: if `supabase start` ever complains about an unknown key here (the schema
+# changes between CLI versions), just run `supabase init` to regenerate this
+# file for your exact CLI version — the migrations/ and seed.sql are the real
+# deliverables and are version-independent.
+
+project_id = "insecure-mail"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.pooler]
+enabled = false
+port = 54329
+pool_mode = "transaction"
+default_pool_size = 20
+max_client_conn = 100
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323
+
+# Local mailbox for testing magic links / confirmation emails.
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+# Where the magic link sends users back to. Update to your Vercel / prod URL.
+site_url = "http://localhost:5173"
+additional_redirect_urls = [
+  "http://localhost:5173",
+  "http://localhost:5173/archive",
+  "https://insecuremail.tech",
+  "https://insecuremail.tech/archive",
+]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+# Magic-link / OTP login is what the frontend uses (signInWithOtp).
+otp_length = 6
+otp_expiry = 3600
+
+[analytics]
+enabled = false
