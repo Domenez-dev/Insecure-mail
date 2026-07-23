@@ -17,11 +17,11 @@ newsletter archive — are a paid perk.
 ```
 Insecure-Mail/
 ├── frontend/            React + Vite + Tailwind landing page & member archive
-├── supabase.md          step-by-step backend setup (DB, RLS, auth)
-├── n8n.md               the automation workflows (RSS → Gemini → email)
-├── figma-make-prompt.md a prompt to regenerate the UI in Figma Make, to compare
-├── architecture.png     target production architecture
-└── backend/             (empty — see "Backend choice" below; not used)
+├── supabase/            schema migration + local seed data
+├── n8n/                 importable workflow JSON (RSS → Gemini → email)
+├── other/supabase.md    step-by-step backend setup (DB, RLS, auth)
+├── other/n8n.md         design notes behind the workflows
+└── architecture.png     target production architecture
 ```
 
 ## Stack
@@ -50,7 +50,7 @@ This project uses **Supabase, not a custom Django/FastAPI backend.** The app is
 mostly auth + gated content + a subscribers table, and n8n already does the heavy
 lifting (scheduling, AI, email). Supabase gives you auth, Postgres, an instant
 API, and row-level security with zero server to run — which matches the "keep it
-simple" goal and the architecture diagram. The empty `backend/` folder is a
-leftover from evaluating a Python backend and isn't used; it can be deleted.
+simple" goal and the architecture diagram.
 
-See `supabase.md` and `n8n.md` for setup.
+See `other/supabase.md` for backend setup, and `n8n/README.md` to import and run
+the automation.

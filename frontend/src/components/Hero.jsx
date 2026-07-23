@@ -1,9 +1,9 @@
-import SubscribeForm from './SubscribeForm.jsx'
+import SubscribeForm from "./SubscribeForm.jsx";
 
 export default function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-line">
-      <div className="mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-2 md:items-center md:py-24">
+      <div className="mx-auto grid max-w-6xl gap-12 px-5 py-12 md:grid-cols-2 md:items-center">
         {/* Left: pitch + subscribe */}
         <div>
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-xs text-ink-soft">
@@ -16,9 +16,8 @@ export default function Hero() {
             Your inbox stays informed.
           </h1>
           <p className="mt-5 max-w-md text-lg text-ink-soft">
-            Insecure Mail reads the noisy world of security feeds so you don’t have to —
-            then sends a tight, human-readable brief three times a week. The Thursday
-            edition is free, forever.
+            Insecure Mail reads the noisy world of security feeds so you don’t
+            have to, then sends a tight human-readable brief three times a week.
           </p>
 
           <div className="mt-8 max-w-md">
@@ -48,8 +47,8 @@ export default function Hero() {
               <div>
                 <p className="text-white/40"># Top Story</p>
                 <p className="text-white">
-                  Critical RCE in a widely-used CI runner — patch is out, exploit is
-                  public. Here’s the 90-second version.
+                  Critical RCE in a widely-used CI runner: patch is out, exploit
+                  is public. Here’s the 90-second version.
                 </p>
               </div>
               <div>
@@ -63,7 +62,9 @@ export default function Hero() {
               </div>
               <div>
                 <p className="text-white/40"># Tooling</p>
-                <p className="text-white">One new open-source scanner worth a look.</p>
+                <p className="text-white">
+                  One new open-source scanner worth a look.
+                </p>
               </div>
               <p className="text-cyan-glow cursor">$ </p>
             </div>
@@ -73,5 +74,5 @@ export default function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }
