@@ -1,4 +1,5 @@
-import { Cat, Globe } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import { FaGlobe } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BRAND } from "../config.js";
 
@@ -30,10 +31,13 @@ export default function Footer() {
           </Link>
         </nav>
 
-        <p className="font-mono text-xs text-ink-soft">
-          © {new Date().getFullYear()} · stay patched. <br></br>made by
-          Domenez-dev
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
+          <p className="font-mono text-xs text-ink-soft text-center">
+            © {new Date().getFullYear()} · stay patched. <br />
+            made by Domenez-dev
+          </p>
+
+          <div className="flex items-center justify-center gap-2">
             <a
               href="https://github.com/domenez-dev"
               target="_blank"
@@ -41,8 +45,9 @@ export default function Footer() {
               aria-label="GitHub profile"
               className="text-ink-soft transition-colors hover:text-ink"
             >
-              <Cat size={24} />
+              <FaGithub size={24} />
             </a>
+
             <a
               href="https://zakaria-resume.netlify.app/"
               target="_blank"
@@ -50,10 +55,10 @@ export default function Footer() {
               aria-label="Portfolio website"
               className="text-ink-soft transition-colors hover:text-ink"
             >
-              <Globe size={24} />
+              <FaGlobe size={24} />
             </a>
           </div>
-        </p>
+        </div>
       </div>
     </footer>
   );
