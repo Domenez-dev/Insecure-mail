@@ -1,0 +1,508 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 14 * * 0,2,4"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "83775d81-bf4f-40c3-b172-cd4644a36d44",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "const day = new Date().getDay(); // 0=Sun … 6=Sat\n\nconst EDITIONS = {\n  0: { key: 'radar',    edition: 'Sun · Threat Radar', send_tier: 'root',  audience: 'root', window_days: 3  },\n  2: { key: 'deepdive', edition: 'Tue · Deep Dive',    send_tier: 'root',  audience: 'root', window_days: 21 },\n  4: { key: 'brief',    edition: 'Thu · The Brief',    send_tier: 'recon', audience: 'all',  window_days: 8  },\n};\n\n// Without this, a manual run on Mon/Wed/Fri/Sat returns { json: undefined }.\nconst chosen = EDITIONS[day] ?? EDITIONS[4];\n\nreturn [{ json: { ...chosen, day, is_fallback: !EDITIONS[day] } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        0
+      ],
+      "id": "45fc0026-7782-400f-b047-9f37eaef85d2",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.key }}",
+                    "rightValue": "radar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8a3e5c22-774a-4e82-93f5-51cb431718f6"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "65bf3a83-b959-46f6-a071-ad23386ad757",
+                    "leftValue": "={{ $json.key }}",
+                    "rightValue": "deepdive",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e3376932-f410-428f-90c7-0a3069687811",
+                    "leftValue": "={{ $json.key }}",
+                    "rightValue": " brief",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        368,
+        -16
+      ],
+      "id": "ccfc02c7-c96d-4e1e-b9ee-5c16a5aad349",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 14 * * 0,2,4"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        -384
+      ],
+      "id": "c96615f4-3e09-49d4-b580-0a10ccc3a8cc",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const MAX_ITEMS = 25;\nconst items = $input.all().map((it) => it.json).slice(0, MAX_ITEMS);\nreturn [{ json: { count: items.length, items } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1568,
+        -80
+      ],
+      "id": "443dab8d-4d5e-4251-b1dc-e2542abc3f60",
+      "name": "items unifier"
+    },
+    {
+      "parameters": {
+        "url": "https://www.darkreading.com/rss.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        176
+      ],
+      "id": "d60b7a06-56e2-4ff9-acbb-6f362e640b42",
+      "name": "Brief - dark reader"
+    },
+    {
+      "parameters": {
+        "url": "https://feeds.feedburner.com/TheHackersNews",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        320
+      ],
+      "id": "2b65bce0-9132-4eb3-af62-ef11a974edfe",
+      "name": "Brief - hacker news"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        960,
+        256
+      ],
+      "id": "afc04f08-eb6e-4bc9-9324-bcb2db1bd14c",
+      "name": "Brief merged"
+    },
+    {
+      "parameters": {
+        "url": "https://unit42.paloaltonetworks.com/feed/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        -144
+      ],
+      "id": "f7275ef7-8f7b-417c-8b3f-3007e01e921d",
+      "name": "Deepdive - palolato"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        960,
+        -80
+      ],
+      "id": "25f40c32-f292-4c3f-9c0c-b78cb9436928",
+      "name": "Deepdive merged"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        960,
+        -400
+      ],
+      "id": "dd94fb28-5bb6-4a8e-850f-c05b495cb25e",
+      "name": "Deepdive merged1"
+    },
+    {
+      "parameters": {
+        "url": "https://feeds.feedburner.com/TheHackersNews",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        -480
+      ],
+      "id": "faec3d08-816f-48df-825b-05026cfead06",
+      "name": "Radar - hacker news"
+    },
+    {
+      "parameters": {
+        "url": "https://www.cisa.gov/cybersecurity-advisories/all.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        -320
+      ],
+      "id": "6af55b10-a22a-4981-89fa-2a216321f487",
+      "name": "Radar - cisa"
+    },
+    {
+      "parameters": {
+        "jsCode": "const WINDOW_DAYS = 3;\nconst cutoff = Date.now() - WINDOW_DAYS * 864e5;\n\nconst clean = (s) =>\n  String(s ?? '').replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();\n\n// Feeds scatter the date across different fields — check the usual suspects.\nconst getWhen = (j) => {\n  const raw = j.isoDate || j.pubDate || j.published || j.date || j.updated || j.created;\n  if (!raw) return null;                 // no date found → keep it, don't guess\n  const t = new Date(raw).getTime();\n  return Number.isFinite(t) ? t : null;\n};\n\nconst seen = new Set();\nconst out = [];\n\nfor (const it of $input.all()) {\n  const j = it.json;\n\n  const when = getWhen(j);\n  if (when !== null && when < cutoff) continue;   // only skip if we KNOW it's old\n\n  const key = clean(j.link || j.guid || j.title).split('?')[0];\n  if (!key || seen.has(key)) continue;            // duplicate → skip\n  seen.add(key);\n\n  out.push({\n    json: {\n      title: clean(j.title),\n      link: j.link || '',\n      date: j.isoDate || j.pubDate || j.published || null,\n      snippet: clean(j.contentSnippet || j.content || j.description).slice(0, 400),\n    },\n  });\n}\n\nout.sort((a, b) => new Date(b.json.date || 0) - new Date(a.json.date || 0));  // newest first\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        -400
+      ],
+      "id": "2bffbcd0-3f54-4653-9221-a22a427e32c6",
+      "name": "3 days filter"
+    },
+    {
+      "parameters": {
+        "jsCode": "const WINDOW_DAYS = 7;\nconst cutoff = Date.now() - WINDOW_DAYS * 864e5;\n\nconst clean = (s) =>\n  String(s ?? '').replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();\n\n// Feeds scatter the date across different fields — check the usual suspects.\nconst getWhen = (j) => {\n  const raw = j.isoDate || j.pubDate || j.published || j.date || j.updated || j.created;\n  if (!raw) return null;                 // no date found → keep it, don't guess\n  const t = new Date(raw).getTime();\n  return Number.isFinite(t) ? t : null;\n};\n\nconst seen = new Set();\nconst out = [];\n\nfor (const it of $input.all()) {\n  const j = it.json;\n\n  const when = getWhen(j);\n  if (when !== null && when < cutoff) continue;   // only skip if we KNOW it's old\n\n  const key = clean(j.link || j.guid || j.title).split('?')[0];\n  if (!key || seen.has(key)) continue;            // duplicate → skip\n  seen.add(key);\n\n  out.push({\n    json: {\n      title: clean(j.title),\n      link: j.link || '',\n      date: j.isoDate || j.pubDate || j.published || null,\n      snippet: clean(j.contentSnippet || j.content || j.description).slice(0, 400),\n    },\n  });\n}\n\nout.sort((a, b) => new Date(b.json.date || 0) - new Date(a.json.date || 0));  // newest first\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        -80
+      ],
+      "id": "bb80b718-5531-40ee-9cb5-0a3e3d74a145",
+      "name": "7 days filter"
+    },
+    {
+      "parameters": {
+        "jsCode": "const WINDOW_DAYS = 3;\nconst cutoff = Date.now() - WINDOW_DAYS * 864e5;\n\nconst clean = (s) =>\n  String(s ?? '').replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();\n\n// Feeds scatter the date across different fields — check the usual suspects.\nconst getWhen = (j) => {\n  const raw = j.isoDate || j.pubDate || j.published || j.date || j.updated || j.created;\n  if (!raw) return null;                 // no date found → keep it, don't guess\n  const t = new Date(raw).getTime();\n  return Number.isFinite(t) ? t : null;\n};\n\nconst seen = new Set();\nconst out = [];\n\nfor (const it of $input.all()) {\n  const j = it.json;\n\n  const when = getWhen(j);\n  if (when !== null && when < cutoff) continue;   // only skip if we KNOW it's old\n\n  const key = clean(j.link || j.guid || j.title).split('?')[0];\n  if (!key || seen.has(key)) continue;            // duplicate → skip\n  seen.add(key);\n\n  out.push({\n    json: {\n      title: clean(j.title),\n      link: j.link || '',\n      date: j.isoDate || j.pubDate || j.published || null,\n      snippet: clean(j.contentSnippet || j.content || j.description).slice(0, 400),\n    },\n  });\n}\n\nout.sort((a, b) => new Date(b.json.date || 0) - new Date(a.json.date || 0));  // newest first\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        192
+      ],
+      "id": "80307453-7f19-4956-a614-56f40cc58c1e",
+      "name": "3 days filter1"
+    },
+    {
+      "parameters": {
+        "url": "https://blog.trailofbits.com/feed/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        0
+      ],
+      "id": "e0790a8a-f7b2-4acc-88af-6f2e81aafa0c",
+      "name": "Deepdive - tofbits"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Deepdive - tofbits",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Deepdive - palolato",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Brief - dark reader",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Brief - hacker news",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Radar - hacker news",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Radar - cisa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brief - dark reader": {
+      "main": [
+        [
+          {
+            "node": "Brief merged",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brief - hacker news": {
+      "main": [
+        [
+          {
+            "node": "Brief merged",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Brief merged": {
+      "main": [
+        [
+          {
+            "node": "3 days filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deepdive - palolato": {
+      "main": [
+        [
+          {
+            "node": "Deepdive merged",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Radar - hacker news": {
+      "main": [
+        [
+          {
+            "node": "Deepdive merged1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Radar - cisa": {
+      "main": [
+        [
+          {
+            "node": "Deepdive merged1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Deepdive merged1": {
+      "main": [
+        [
+          {
+            "node": "3 days filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deepdive merged": {
+      "main": [
+        [
+          {
+            "node": "7 days filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deepdive - tofbits": {
+      "main": [
+        [
+          {
+            "node": "Deepdive merged",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "3 days filter1": {
+      "main": [
+        []
+      ]
+    },
+    "3 days filter": {
+      "main": [
+        [
+          {
+            "node": "items unifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "bd0de7f2-359a-4ca7-9786-ec1ecc15bf96",
+  "meta": {
+    "instanceId": "3f635f39eab0827a3fc09f72aa875f84dca45649009e89a8fb3b311e58b7e24c"
+  },
+  "nodeGroups": [],
+  "id": "RqLYlx7s6fH7j36l",
+  "tags": []
+}
