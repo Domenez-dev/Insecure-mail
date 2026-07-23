@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom'
-import { BRAND } from '../config.js'
+import { Cat, Globe } from "lucide-react";
+import { Link } from "react-router-dom";
+import { BRAND } from "../config.js";
 
 export default function Footer() {
   return (
@@ -9,20 +10,51 @@ export default function Footer() {
           <span className="grid h-7 w-7 place-items-center rounded-md bg-ink font-mono text-xs font-bold text-cyan-glow">
             ~$
           </span>
-          <span className="font-display text-sm font-semibold">{BRAND.name}</span>
-          <span className="font-mono text-xs text-ink-soft">· {BRAND.domain}</span>
+          <span className="font-display text-sm font-semibold">
+            {BRAND.name}
+          </span>
+          <span className="font-mono text-xs text-ink-soft">
+            · {BRAND.domain}
+          </span>
         </div>
 
         <nav className="flex items-center gap-5 text-sm text-ink-soft">
-          <a href="/#inside" className="transition-colors hover:text-ink">What’s inside</a>
-          <a href="/#tiers" className="transition-colors hover:text-ink">Plans</a>
-          <Link to="/login" className="transition-colors hover:text-ink">Log in</Link>
+          <a href="/#inside" className="transition-colors hover:text-ink">
+            What’s inside
+          </a>
+          <a href="/#tiers" className="transition-colors hover:text-ink">
+            Plans
+          </a>
+          <Link to="/login" className="transition-colors hover:text-ink">
+            Log in
+          </Link>
         </nav>
 
         <p className="font-mono text-xs text-ink-soft">
-          © {new Date().getFullYear()} — stay patched.
+          © {new Date().getFullYear()} · stay patched. <br></br>made by
+          Domenez-dev
+          <div className="flex items-center gap-2">
+            <a
+              href="https://github.com/domenez-dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub profile"
+              className="text-ink-soft transition-colors hover:text-ink"
+            >
+              <Cat size={24} />
+            </a>
+            <a
+              href="https://zakaria-resume.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Portfolio website"
+              className="text-ink-soft transition-colors hover:text-ink"
+            >
+              <Globe size={24} />
+            </a>
+          </div>
         </p>
       </div>
     </footer>
-  )
+  );
 }
